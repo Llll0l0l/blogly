@@ -3,7 +3,7 @@
 
 <head>
     <%- include('includes/head', { title: post.title }) %>
-        <link rel="stylesheet" href="/styles/posts.css">
+        <link rel="stylesheet" href="/styles/posts.css" />
 </head>
 
 <body>
@@ -13,12 +13,11 @@
                 <%= post.title %>
             </h1>
             <section id="post-meta">
-                <address>
-                    <a href="mailto:<%= post.author_email %>"><%= post.author_name %></a> |
-                    <time datetime="<%= post.post_date %>"><%= post.humanReadableDate %></time>
-               </address>
+                <address><a href="mailto:<%= post.author_email %>"><%= post.author_name %></a> |
+          <time datetime="<%= post.post_date %>"><%= post.humanReadableDate %></time>
+        </address>
             </section>
-            <hr>
+            <hr />
             <section>
                 <p id="body">
                     <%= post.body %>

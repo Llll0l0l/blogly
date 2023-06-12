@@ -46,15 +46,48 @@ router.get("/posts/:id", async function(req, res, next) {
     const postData = {
         ...posts[0],
         post_date: posts[0].post_date.toISOString(),
-        humanReadableDate: posts[0].post_date.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        humanReadableDate: posts[0].post_date.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
         }),
-    }
+    };
 
     res.render("post-detail", { post: postData });
+});
+
+router.get("/posts/:id/edit", async function(req, res) {
+    const [posts] = await db.query("SELECT * FROM posts WHERE id = ?", [
+        req.params.id,
+    ]);
+
+    if (!posts || posts.length === 0) {
+        return res.status(404).render("404");
+    }
+
+    res.render("update-post", { post: posts[0] });
+});
+
+router.post("/posts/:id/edit", async function(req, res) {
+
+
+    await db.query(
+        "UPDATE posts SET title = ?, summary = ?, body = ? WHERE id = ?", [
+            req.body.title,
+            req.body.summary,
+            req.body.content,
+            req.params.id
+        ]
+    );
+
+    res.redirect("/posts");
+});
+
+
+router.post("/posts/:id/delete", async function(req, res) {
+    await db.query("DELETE FROM posts WHERE id = ?", [req.params.id]);
+    res.redirect("/posts");
 });
 
 module.exports = router;
